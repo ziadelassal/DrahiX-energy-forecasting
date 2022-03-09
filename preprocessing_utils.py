@@ -4,36 +4,30 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 
-'''data_df = pd.read_csv('./All_data_zone2.csv', index_col='Unnamed: 0')
 
-data_df['Date & Time'] = data_df['Date & Time'].apply(
-    lambda x : datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
-data_df.iloc[0]['Date & Time']
 
-#date of activation of the sensors
-starting_date = data_df[data_df['Usage [kW]']!=0]['Date & Time'].iloc[0]
-print('Monitoring started at: ', starting_date)
-
-#dropping null measures (before the activation of the sensors)
-data_df.drop(data_df[data_df['Date & Time'] < starting_date].index, inplace=True)
-
-data_df.to_csv('All_data_v1.csv')
-'''
 
 
 def str_to_date(s):
     """Converts a string to datetime"""
     return datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
 
+
 def is_weekday(ds):
-    """For a given datetime ds, returns if it is in weekday or not"""
+    """For a given datetime ds, returns if it is a weekday or not"""
     return ds.weekday() <= 4 
+
 
 def preprocess(data_df):
     """Data cleaning and preprocessing"""
+
     print('Converting dates to Datetime...')
     data_df['Date & Time'] = data_df['Date & Time'].apply(
         lambda x : datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+
+    print('Dropping measures before the activation of the sensors...')
+    starting_date = data_df[data_df['Usage [kW]']!=0]['Date & Time'].iloc[0]
+    data_df.drop(data_df[data_df['Date & Time'] < starting_date].index, inplace=True)
 
     print('Dropping Total Zone 2 [kW] and Generation [kW]')
     data_df = data_df.drop(['Total Zone 2 [kW]', 'Generation [kW]'], axis=1)
@@ -63,6 +57,6 @@ def preprocess(data_df):
     print('Adding Weekend column...')
     data_df['Weekend'] = data_df['Weekday'].apply(lambda x: 1 if x in (5,6) else 0)
 
-    print('Preprocessing completed.')
+    print('Preprocessing completed!')
 
     return data_df
