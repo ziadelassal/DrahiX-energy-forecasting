@@ -67,7 +67,7 @@ plot_df(data_df,
 
 #%% PACF ACF
 ts = data_df.set_index('DateTime')['Usage'][START:M]
-plot_pacf_acf(ts, roll=60, sampling_step=60,lags=180, savefig=False)
+plot_pacf_acf(ts, roll=60, sampling_step=60,lags=120, savefig=False)
 
 
 #%% AUTOREG
@@ -152,7 +152,7 @@ prophet_model, forecast = pf.predictions_prophet(
         data_df, 
         column=['Usage'], 
         start=START, 
-        m=M 
+        m=M, 
         end=END,  
         roll=60, 
         sampling_step=60,
