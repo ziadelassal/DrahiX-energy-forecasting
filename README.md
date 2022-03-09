@@ -1,4 +1,4 @@
-# DrahiX Power Consumption Forecasting
+# DrahiX Power Consumption Forecast
 
 ## Requirements
 
