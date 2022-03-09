@@ -1,5 +1,4 @@
 #%%
-
 import imp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,15 +27,24 @@ plt.style.use('seaborn')
 
 from importlib import reload
 
-#%% Preprocessing
+PATH = './All_data_zone2.csv'
+START = '2019-09-09 00:00:00' 
+M = '2019-09-26 00:00:00'
+END = '2019-10-01 00:00:00'
 
-data_df = pd.read_csv('./All_data_v1.csv', index_col='Unnamed: 0')
+
+#%% Data importation and preprocessing
+data_df = pd.read_csv(PATH, index_col='Unnamed: 0')
 data_df = prep.preprocess(data_df)
+
 
 #%% Correlation Matrix
 df_1d_freq = data_df.rolling(1440).mean().iloc[np.arange(0,len(data_df), 1440)]
+df_1h_freq = data_df.rolling(60).mean().iloc[np.arange(0,len(data_df), 60)]
 plot_corr_matrix(data_df, savefig=False)
 plot_corr_matrix(df_1d_freq, 'every-day sampling', savefig=False)
+plot_corr_matrix(df_1h_freq, 'every-hour sampling', savefig=False)
+
 
 #%% Stackplot
 stackplot(data_df, 
@@ -47,6 +55,7 @@ stackplot(data_df,
     savefig=False,
     exportation_name='stackplot')
 
+#%% Plot
 plot_df(data_df, 
     columnsax1=['Lights'], 
     columnsax2=['Global_Solar_Flux']  ,
@@ -56,17 +65,17 @@ plot_df(data_df,
     exportation_name='plot_nov2019feb2020_Heating_Airtemp')
 
 
-#%% Time Series
-ts = data_df.set_index('DateTime')['Usage']
-#plot_pacf_acf(ts)
+#%% PACF ACF
+ts = data_df.set_index('DateTime')['Usage'][START:M]
+plot_pacf_acf(ts, roll=60, sampling_step=60,lags=180, savefig=False)
 
 
 #%% AUTOREG
 fit_autoreg, ts_pred = pf.predictions_autoreg(
         data_df,
-        start='2019-09-09 00:00:00', 
-        m='2019-09-26 00:00:00', 
-        end='2019-10-01 00:00:00',
+        start=START, 
+        m=M, 
+        end=END,
         lags=24,
         exogenes_columns = [
             #'Weekday',
@@ -92,9 +101,9 @@ eval.compute_results(data_df, ts_pred, column='Usage', model_type='autoreg', pri
 #%%ARIMA
 fit_arima, ts_pred = pf.predictions_arima(
         data_df,
-        start='2019-09-09 00:00:00', 
-        m='2019-09-26 00:00:00', 
-        end='2019-10-01 00:00:00',  
+        start=START, 
+        m=M, 
+        end=END,  
         roll=60, 
         sampling_step=60,
         order=(48,1,0)
@@ -107,9 +116,9 @@ eval.compute_results(data_df, ts_pred, column='Usage', model_type='autoreg', pri
 # %% SARIMAX
 fit_sarimax, ts_pred = pf.predictions_sarimax(
         data_df,
-        start='2019-09-09 00:00:00', 
-        m='2019-09-26 00:00:00', 
-        end='2019-10-01 00:00:00',  
+        start=START, 
+        m=M, 
+        end=END,  
         roll=60, 
         sampling_step=60,
         order=(1,1,0), tronc_s_order=(2,1,0),
@@ -142,9 +151,9 @@ eval.compute_results(data_df, ts_pred, column='Usage', model_type='sarimax', pri
 prophet_model, forecast = pf.predictions_prophet(
         data_df, 
         column=['Usage'], 
-        start='2019-09-09 00:00:00', 
-        m='2019-09-26 00:00:00', 
-        end='2019-10-01 00:00:00',  
+        start=START, 
+        m=M 
+        end=END,  
         roll=60, 
         sampling_step=60,
         include_history=True,
