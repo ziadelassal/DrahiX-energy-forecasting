@@ -55,11 +55,6 @@ plot_df(data_df,
     savefig=False, 
     exportation_name='plot_nov2019feb2020_Heating_Airtemp')
 
-#the water heater can be skipped
-#AirTemp positively correlated to energy consumption during summer (cooling)
-#and negatively during winter (heating)
-#Plugs = prises. Highly correlated to lights 
-
 
 #%% Time Series
 ts = data_df.set_index('DateTime')['Usage']
@@ -179,6 +174,3 @@ prophet_model, forecast = pf.predictions_prophet(
 
 eval.compute_results(data_df, forecast, model_type='prophet', print_results=True)
 
-
-#%%
-#reload(pf)
