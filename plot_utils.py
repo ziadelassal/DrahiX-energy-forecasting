@@ -89,16 +89,25 @@ def plot_corr_matrix(df, sampling_title='every-minute sampling', savefig=False):
 
 
 
-def plot_pacf_acf(ts):
+def plot_pacf_acf(ts, roll=1, sampling_step=1, lags=30, savefig=False):
     """
-    Plot PACF and ACF for SARIMAX
+    Plot PACF and ACF for AutoReg and ARIMA
     """
+
     start, end = ts.index[0], ts.index[-1]
-    fig1 = plot_pacf(ts, lags=30, alpha=.01, method='ywm')
-    fig1.suptitle(f'Partial Autocorrelation, start={start}, end={end}')
-    plt.savefig('pacf')
-    fig2 = plot_acf(ts, lags=30, alpha=.01)
-    fig2.suptitle(f'Autocorrelation, start={start}, end={end}')
-    plt.savefig('acf')
+    n=len(ts)
+    ts = ts.rolling(roll).mean().iloc[
+            np.arange(0,n,sampling_step)].fillna(0)
+
+    fig1 = plot_acf(ts, lags=lags, alpha=.05)
+    fig1.suptitle(f'Autocorrelation, start={start}, end={end}')
+    if savefig:
+        plt.savefig('acf')
+    
+    fig2 = plot_pacf(ts, lags=lags, alpha=.05, method='ywm')
+    fig2.suptitle(f'Partial Autocorrelation, start={start}, end={end}')
+    if savefig:
+        plt.savefig('pacf')
+    
     plt.show()
 
