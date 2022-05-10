@@ -1,5 +1,7 @@
 # Drahi X-Novation Center Power Consumption Forecast
 
+Power consumption forecasting plays a key role in the energy sector for adapting the power supply to the demand. The rise of renewable energies, whose main drawback is intermittence, makes forecasting even more important. At a smaller scale, power consumption forecasting is crucial in areas that have their own source of energy such as solar panels. In this project, we forecast the power consumption of the Drahi X-Novation Center—Ecole Polytechnique’s entrepreneurship building—based on past measurements and exogenous meteorological data. We use linear models such as ARIMA, and Prophet, that give good results for prediction horizons going from hours to 5 days.
+
 ## Requirements
 
 - fbprophet=0.4
@@ -34,6 +36,6 @@
 - Place the file ```All_data_zone2.csv``` in the current directory.
 - Execute the importation and the preprocessing cells.
 - Execute one of the following cells to:
-  - plot the time series
-  - plot the correlation matrix
-  - fit, predict, plot and asses each model
+  - plot the time series,
+  - plot the correlation matrix,
+  - fit, predict, plot and asses each model.
