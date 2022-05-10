@@ -4,19 +4,13 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
-
-
 def str_to_date(s):
     """Converts a string to datetime"""
     return datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
 
-
 def is_weekday(ds):
     """For a given datetime ds, returns if it is a weekday or not"""
     return ds.weekday() <= 4 
-
 
 def preprocess(data_df):
     """Data cleaning and preprocessing"""
