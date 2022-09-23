@@ -6,6 +6,32 @@ In this project, **we forecast the power consumption of Ecole Polytechnique's st
 
 ## Results Summarized
 
+*For a detailled explanation of the project, the models used and the results, please refer to the PDF report in the repo.*
+
+The table below summarizes the metrics (mean absolute error and mean squared error) obtained with 3 models, using different parameters and with or without using exogeneous variables like the weather.  The parameters used for SARIMAX are $(1,1,0)(2,1,0)$.
+
+| Model | MAE | MSE |
+|---|---|---|
+|AR(24) | 0.59 | 0.52 |
+|AR(96) | 0.45 | 0.35 |
+|**AR(96), exog.** | **0.34** | **0.27** |
+|ARIMA(1,1,0) | 0.57 | 0.53 | 
+|SARIMAX, $s$=24 | 0.65 | 0.71 | 
+|SARIMAX, $s$=24, exog. | 1.01 | 1.61 |
+|**SARIMAX, $s$=168** | **0.28** | **0.20** | 
+|SARIMAX, $s$=168, exog.  | 0.41 | 0.32 |
+|Prophet | 0.36 | 0.25 |
+|Prophet, exog. | 0.31 | 0.21 |
+|**Prophet, exog., weekend seasonality** | **0.27** | **0.18** |
+
+Below are the prevision plots of the three best performing models (in bold on the previous table). 
+
+![Autoreg(96) with exogeneous variables](img/Autoreg_96lags_Exog_plot.png)
+
+![SARIMAX](img/SARIMAX_s7x24_plot.png)
+
+![Prophet](img/prophet_with_all_plot.png)
+
 ## Requirements
 
 - fbprophet=0.4
